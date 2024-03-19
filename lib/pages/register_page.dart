@@ -1,42 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/components/my_button.dart';
-import 'package:food_delivery_app/components/my_textfield.dart';
 
-import 'home_page.dart';
+import '../components/my_button.dart';
+import '../components/my_textfield.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
-
-  const LoginPage({
+  const RegisterPage({
     super.key,
     required this.onTap,
   });
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   // Контроллеры текста
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  // Логин метод
-  void login() {
-    /*
-
-    // Заполнить аутентификацию здесь..
-
-    */
-
-    // Навигация на домашнюю страницу
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomePage(),
-      ),
-    );
-  }
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
             // Сообщение, слоган приложения
             Text(
-              'Food Delivery app',
+              'Создание нового аккаунта',
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.inversePrimary,
@@ -84,10 +67,19 @@ class _LoginPageState extends State<LoginPage> {
 
             const SizedBox(height: 10),
 
-            // Кнопка Входа
+            // Подтверждение пароля, поле ввода
+            MyTextField(
+              controller: confirmPasswordController,
+              hintText: 'Повторите пароль',
+              obscureText: true,
+            ),
+
+            const SizedBox(height: 10),
+
+            // Кнопка Регистрации
             MyButton(
-              onTap: login,
-              text: 'Войти',
+              onTap: () {},
+              text: 'Создать аккаунт',
             ),
 
             const SizedBox(height: 10),
@@ -97,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Еще нет аккаунта?',
+                  'У вас уже есть аккаунт?',
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.inversePrimary),
                 ),
@@ -105,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 GestureDetector(
                   onTap: widget.onTap,
                   child: Text(
-                    'Регистрация',
+                    'Войти',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.inversePrimary,
                       fontWeight: FontWeight.bold,
