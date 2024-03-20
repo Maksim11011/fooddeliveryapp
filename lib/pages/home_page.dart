@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/components/my_current_location.dart';
+import 'package:food_delivery_app/components/my_description_box.dart';
 import 'package:food_delivery_app/components/my_drawer.dart';
 import 'package:food_delivery_app/components/my_sliver_app_bar.dart';
 
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePage> {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           MySliverAppBar(
+            title: const Text('title'),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -24,11 +27,14 @@ class _HomePageState extends State<HomePage> {
                   indent: 25,
                   endIndent: 25,
                   color: Theme.of(context).colorScheme.secondary,
-                )
+                ),
                 // Мое местоположение
+                const MyCurrentLocation(),
+
+                // Описание доставки
+                const MyDescriptionBox(),
               ],
             ),
-            title: const Text('title'),
           ),
         ],
         body: Container(
