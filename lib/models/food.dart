@@ -1,10 +1,10 @@
 class Food {
-  final String name;
-  final String description;
-  final String imagePath;
-  final double price;
-  final FoodCategory category;
-  List<Addon> availableAddons;
+  final String name; //  имя бургера
+  final String description; //  описание описание бургера
+  final String imagePath; //  lib/images/burger.jpg
+  final double price; //  99р
+  final FoodCategory category; // бургер
+  List<Addon> availableAddons; // [Супер соус, Доп.сыр, Доп.котлета]
 
   Food({
     required this.name,

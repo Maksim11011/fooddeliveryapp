@@ -53,7 +53,7 @@ class MyCurrentLocation extends StatelessWidget {
                 ),
 
                 // Выпадабщее меню
-                Icon(Icons.keyboard_arrow_down_rounded),
+                const Icon(Icons.keyboard_arrow_down_rounded),
               ],
             ),
           )
