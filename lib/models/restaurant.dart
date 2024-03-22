@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/food.dart';
+import 'cart_item.dart';
 
 class Restaurant extends ChangeNotifier {
   // Список  меню
@@ -321,16 +323,85 @@ class Restaurant extends ChangeNotifier {
 О П Е Р А Т О Р Ы
 
 */
+// Корзина пользователь
+  final List<CartItem> _cart = [];
 
 //  Добавить в корзину
+  void addToCart(Food food, List<Addon> selectedAddons) {
+    // Посмотреть, есть ли товар уже в корзине с выбранными едой и дополнениями
+    CartItem? cartItem = _cart.firstWhereOrNull((item) {
+      // Проверить одинакова ли еда в заказе
+      bool isSameFood = item.food == food;
+
+      // Проверть одинаковы ли дополнения к еде
+      bool isSameAddons =
+          ListEquality().equals(item.selectedAddons, selectedAddons);
+
+      return isSameFood && isSameAddons;
+    });
+
+    // Если товар существует - увеличить количество
+    if (cartItem != null) {
+      cartItem.quantity++;
+    }
+
+    // В противном случае добавить новый товар в корзину
+    else {
+      _cart.add(
+        CartItem(
+          food: food,
+          selectedAddons: selectedAddons,
+        ),
+      );
+    }
+    notifyListeners();
+  }
 
 //  Удалить из корзины
+  void removeFromCart(CartItem cartItem) {
+    int cartIndex = _cart.indexOf(cartItem);
+
+    if (cartIndex != 1) {
+      if (_cart[cartIndex].quantity > 1) {
+        _cart[cartIndex].quantity--;
+      } else {
+        _cart.removeAt(cartIndex);
+      }
+      notifyListeners();
+    }
+  }
 
 //  Получить общую стоимость в корзине
+  double getTotalPrice() {
+    double total = 0.0;
+
+    for (CartItem cartItem in _cart) {
+      double itemTotal = cartItem.food.price;
+
+      for (Addon addon in cartItem.selectedAddons) {
+        itemTotal += addon.price;
+      }
+
+      total += itemTotal * cartItem.quantity;
+    }
+    return total;
+  }
 
 //  Получить общщее количество товаров в корзине
+  int getTotalItemCount() {
+    int totalItemCount = 0;
+
+    for (CartItem cartItem in _cart) {
+      totalItemCount += cartItem.quantity;
+    }
+    return totalItemCount;
+  }
 
 //  Очистить корзину
+  void clearCart() {
+    _cart.clear();
+    notifyListeners();
+  }
 
 /*
 

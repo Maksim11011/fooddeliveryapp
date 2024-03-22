@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/my_button.dart';
+import 'package:food_delivery_app/models/restaurant.dart';
+import 'package:provider/provider.dart';
 import '../models/food.dart';
 
 class FoodPage extends StatefulWidget {
@@ -21,6 +23,22 @@ class FoodPage extends StatefulWidget {
 }
 
 class _FoodPageState extends State<FoodPage> {
+  // Метод добавления в корзину
+  void addToCart(Food food, Map<Addon, bool> selectedAddons) {
+    // Закрыть текущую страницу и вернуться в меню
+    Navigator.pop(context);
+
+    // Сформировать дополнения
+    List<Addon> currentlySelectedAddons = [];
+    for (Addon addon in widget.food.availableAddons) {
+      if (widget.seleectedAddons[addon] == true) {
+        currentlySelectedAddons.add(addon);
+      }
+    }
+    // Добавить в корзину
+    context.read<Restaurant>().addToCart(food, currentlySelectedAddons);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -116,7 +134,9 @@ class _FoodPageState extends State<FoodPage> {
                 ),
 
                 // КНопка добавления в корзину
-                MyButton(onTap: () {}, text: 'Добавить'),
+                MyButton(
+                    onTap: () => addToCart(widget.food, widget.seleectedAddons),
+                    text: 'Добавить'),
 
                 const SizedBox(height: 25),
               ],
