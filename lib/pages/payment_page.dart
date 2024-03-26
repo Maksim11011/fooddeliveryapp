@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:food_delivery_app/components/my_button.dart';
+
+class PaymentPage extends StatefulWidget {
+  const PaymentPage({super.key});
+
+  @override
+  State<PaymentPage> createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String cardNumber = '';
+  String expiryDate = '';
+  String cardHolderName = '';
+  String cvvCode = '';
+  bool isCvvFocused = false;
+
+  // Пользователь хочет оплатить
+  void userTappedPay() {
+    if (formKey.currentState!.validate()) {
+      // Показывать только в томслучае, если форма действительна
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Подтвердить оплату'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text('Номер карты: $cardNumber'),
+                Text('Срок действия: $expiryDate'),
+                Text('Держатель: $cardHolderName'),
+                Text('CVV: $cvvCode'),
+              ],
+            ),
+          ),
+          actions: [
+            // Кнопка отмены
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Отмена'),
+            ),
+
+            // Кнопка подтверждения
+            TextButton(
+              onPressed: () {},
+              child: const Text('Далее'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text('Оформление заказа'),
+      ),
+      body: Column(
+        children: [
+          // Платежная карта
+          CreditCardWidget(
+            cardNumber: cardNumber,
+            expiryDate: expiryDate,
+            cardHolderName: cardHolderName,
+            cvvCode: cvvCode,
+            showBackView: isCvvFocused,
+            onCreditCardWidgetChange: (p0) {},
+          ),
+
+          // Форма карты
+          CreditCardForm(
+            cardNumber: cardNumber,
+            expiryDate: expiryDate,
+            cardHolderName: cardHolderName,
+            cvvCode: cvvCode,
+            onCreditCardModelChange: (data) {
+              setState(() {
+                cardNumber = data.cardNumber;
+                expiryDate = data.expiryDate;
+                cardHolderName = data.cardHolderName;
+                cvvCode = data.cvvCode;
+              });
+            },
+            formKey: formKey,
+          ),
+
+          const Spacer(),
+
+          MyButton(
+            onTap: userTappedPay,
+            text: 'Оплатить',
+          ),
+
+          const SizedBox(height: 25),
+        ],
+      ),
+    );
+  }
+}
