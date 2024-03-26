@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:food_delivery_app/components/my_button.dart';
 
+import 'delivey_progress_page.dart';
+
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
 
@@ -44,7 +46,15 @@ class _PaymentPageState extends State<PaymentPage> {
 
             // Кнопка подтверждения
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DeliveryProgressPage(),
+                  ),
+                );
+              },
               child: const Text('Далее'),
             ),
           ],
@@ -60,7 +70,7 @@ class _PaymentPageState extends State<PaymentPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Оформление заказа'),
+        title: const Text('Оплата онлайн'),
       ),
       body: Column(
         children: [

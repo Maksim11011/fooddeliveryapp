@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/food.dart';
+import 'package:intl/intl.dart';
 import 'cart_item.dart';
 
 class Restaurant extends ChangeNotifier {
@@ -411,8 +412,47 @@ class Restaurant extends ChangeNotifier {
 */
 
 // Генератор квитанции
+  String displayCartReceipt() {
+    final receipt = StringBuffer();
+    receipt.writeln('Ваша квитанция.');
+    receipt.writeln();
+
+    // Дата состовления квитанции
+    String formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    receipt.writeln(formattedDate);
+    receipt.writeln();
+    receipt.writeln('----------');
+
+    for (final cartItem in _cart) {
+      receipt.writeln(
+          "${cartItem.quantity} x ${cartItem.food.name} - ${_formatPrice(cartItem.food.price)}");
+      if (cartItem.selectedAddons.isNotEmpty) {
+        receipt.writeln(
+            "   Дополнения: ${_formatAddons(cartItem.selectedAddons)}");
+      }
+      receipt.writeln();
+    }
+
+    receipt.writeln('----------');
+    receipt.writeln('----------');
+    receipt.writeln('Всего позиций: ${getTotalItemCount()}');
+    receipt.writeln('Всего стоимость: ${_formatPrice(getTotalPrice())}');
+
+    return receipt.toString();
+  }
 
 // Форматирование двойного значения в деньги
+  String _formatPrice(double price) {
+    return '$priceр';
+
+    //Text('(${addon.price}р)'),
+  }
 
 // Форматировать список дополнений в строковое резюме
+  String _formatAddons(List<Addon> addons) {
+    return addons
+        .map((addon) => '${addon.name} (${_formatPrice(addon.price)})')
+        .join(', ');
+  }
 }
