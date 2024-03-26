@@ -317,6 +317,7 @@ class Restaurant extends ChangeNotifier {
 */
 
   List<Food> get menu => _menu;
+  List<CartItem> get cart => _cart;
 
 /*
 
@@ -335,7 +336,7 @@ class Restaurant extends ChangeNotifier {
 
       // Проверть одинаковы ли дополнения к еде
       bool isSameAddons =
-          ListEquality().equals(item.selectedAddons, selectedAddons);
+          const ListEquality().equals(item.selectedAddons, selectedAddons);
 
       return isSameFood && isSameAddons;
     });
